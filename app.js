@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 
 //** Routes middlewares
 
-app.use('/transactions', require('./routes/transaction'));
+app.use('/onlinegame', require('./routes/onlinegame'));
 
 //** Route not found middleware
 // app.all('*', require('./routes/notFound'));
