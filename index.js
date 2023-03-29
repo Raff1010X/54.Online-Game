@@ -7,7 +7,7 @@ process.on('uncaughtException', (err) => {
 
 //** Start server
 const app = require('./app');
-const port = 8080;
+const port = 8085;
 const mode = app.get('env').toUpperCase();
 const server = app.listen(port, () => {
     console.log(`Server is running on port ${port} in ${mode} mode`);
