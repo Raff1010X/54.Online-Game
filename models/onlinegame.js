@@ -2,10 +2,9 @@ exports.calculate = (data) => {
     console.time('time');
     const { groupCount } = data;
     const clansCopy = data.clans.slice().sort((a, b) => {
-        if (a.points === b.points) {
-            return a.numberOfPlayers - b.numberOfPlayers;
-        }
-        return b.points - a.points;
+        a.points === b.points
+            ? a.numberOfPlayers - b.numberOfPlayers
+            : b.points - a.points;
     });
 
     let result = [],
