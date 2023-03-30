@@ -1,4 +1,5 @@
 exports.calculate = (data) => {
+    console.time('time')
     const { groupCount } = data;
     const clansCopy = data.clans.slice().sort((a, b) => {
         if (a.points === b.points) {
@@ -7,7 +8,6 @@ exports.calculate = (data) => {
         return b.points - a.points;
     });
 
-    // Iterate through head and group clansCopy based on number of players
     let result = [],
         group = [],
         skip = [],
@@ -30,13 +30,14 @@ exports.calculate = (data) => {
             result.push(group);
             group = [];
             sum = 0;
-            if (skip.length > 0) {
+            const skipLen = skip.length;
+            if (skipLen > 0) {
                 clansCopy.unshift(...skip);
-                len += skip.length;
+                len += skipLen;
                 skip = [];
             }
         }
     } while (len > 0);
-
+    console.timeEnd('time')
     return result;
 };
