@@ -1,8 +1,9 @@
 exports.calculate = (data) => {
     const { groupCount } = data;
     const clansCopy = data.clans.slice().sort((a, b) => {
-        a.points === b.points ? a.numberOfPlayers - b.numberOfPlayers : b.points - a.points;
+        return a.points === b.points ? a.numberOfPlayers - b.numberOfPlayers : b.points - a.points;
     });
+    console.log(clansCopy)
     let result = [], group = [], skip = [], sum = 0;
     do {
         sum += clansCopy[0].numberOfPlayers;
