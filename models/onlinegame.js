@@ -1,5 +1,5 @@
 exports.calculate = (data) => {
-    console.time('time')
+    console.time('time');
     const { groupCount } = data;
     const clansCopy = data.clans.slice().sort((a, b) => {
         if (a.points === b.points) {
@@ -18,11 +18,9 @@ exports.calculate = (data) => {
     do {
         players = clansCopy[0].numberOfPlayers;
         sum += players;
-        if (sum <= groupCount) group.push(clansCopy[0]);
-        else {
-            skip.push(clansCopy[0]);
-            sum -= players;
-        }
+        sum <= groupCount
+            ? group.push(clansCopy[0])
+            : (skip.push(clansCopy[0]), (sum -= players));
         clansCopy.shift();
         len -= 1;
 
@@ -31,13 +29,13 @@ exports.calculate = (data) => {
             group = [];
             sum = 0;
             const skipLen = skip.length;
-            if (skipLen > 0) {
+            if (skipLen) {
                 clansCopy.unshift(...skip);
                 len += skipLen;
                 skip = [];
             }
         }
     } while (len > 0);
-    console.timeEnd('time')
+    console.timeEnd('time');
     return result;
 };
