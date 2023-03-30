@@ -1,18 +1,20 @@
 exports.calculate = (data) => {
-    let { groupCount, clans } = data;
-
-    // Sort clans by number of players and then by points
-    clans = clans
-        .sort((a, b) => a.numberOfPlayers - b.numberOfPlayers)
-        .sort((a, b) => b.points - a.points);
-
-    // Iterate through clans and group clans based on number of players
-    // TODO
-
-    // Add any remaining clans in temp to the result array
-    if (temp.length > 0) {
-        result.push(temp);
-    }
-
+    const { groupCount } = data;
+    const clansCopy = data.clans.slice().sort((a, b) => {
+        a.points === b.points ? a.numberOfPlayers - b.numberOfPlayers : b.points - a.points;
+    });
+    let result = [], group = [], skip = [], sum = 0;
+    do {
+        sum += clansCopy[0].numberOfPlayers;
+        sum <= groupCount ? group.push(clansCopy[0]) : (skip.push(clansCopy[0]), (sum -= clansCopy[0].numberOfPlayers));
+        clansCopy.shift();
+        if (clansCopy.length === 0 || sum === groupCount) {
+            result.push(group);
+            group = [];
+            sum = 0;
+            clansCopy.unshift(...skip);
+            skip = [];
+        }
+    } while (clansCopy.length > 0);
     return result;
 };
