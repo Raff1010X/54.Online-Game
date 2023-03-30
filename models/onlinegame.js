@@ -10,7 +10,7 @@ exports.calculate = (data) => {
     let result = [],
         group = [],
         skip = [],
-        clan = [],
+        clan = {},
         sum = 0;
 
     while (clans.length > 0) {

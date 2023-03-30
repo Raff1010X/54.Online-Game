@@ -31,4 +31,4 @@ l <= m
 W folderze: './example'
 
 ## Algorytm
-W pliku: './models/transaction.js'
+W pliku: './models/onlinegame.js'
