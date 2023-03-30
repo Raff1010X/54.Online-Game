@@ -1,27 +1,100 @@
+exports.calculate2 = (data) => {
+    return data;
+};
+
 exports.calculate = (data) => {
-    let { groupCount, clans } = data;
+    let { groupCount } = data;
+    let clansCopy = data.clans.slice();
 
     // Sort clans by number of players and then by points
-    clans
-        .sort((a, b) => a.numberOfPlayers - b.numberOfPlayers)
-        .sort((a, b) => b.points - a.points);
+    clansCopy.sort((a, b) => {
+        if (a.points === b.points) {
+            return a.numberOfPlayers - b.numberOfPlayers;
+        }
+        return b.points - a.points;
+    });
 
-    // Separate clans into head and tail based on number of players
-    let head = [],
-        tail = [];
-    clans.forEach((el) =>
-        el.numberOfPlayers <= groupCount ? head.push(el) : tail.push(el)
-    );
+    // Iterate through head and group clansCopy based on number of players
+    let result = [];
+    let group = [];
+    let skip = [];
+    let sum = 0;
+    let players = 0;
 
-    //TODO // Iterate through head and group clans based on number of players
-    let result = [],
-        temp = [];
-    
-    // Add any remaining clans in temp to the result array
-    if (temp.length > 0) {
-        result.push(temp);
+    for (let i = 0; i < clansCopy.length; i++) {
+        players = clansCopy[i].numberOfPlayers;
+        sum += players;
+
+        if (sum <= groupCount) {
+            group.push(clansCopy[i]);
+            if (sum === groupCount) {
+                result.push(group);
+                group = [];
+                sum = 0;
+                if (skip.length > 0) {
+                    clansCopy.splice(i + 1, 0, ...skip);
+                    skip = [];
+                }
+            }
+        }
+
+        if (sum > groupCount) {
+            skip.push(clansCopy[i]);
+            sum -= players;
+        }
+
+        if (i === clansCopy.length - 1) {
+            result.push(group);
+            group = [];
+            sum = 0;
+            if (skip.length > 0) {
+                clansCopy.splice(i + 1, 0, ...skip);
+                skip = [];
+            }
+        }
     }
 
-    // Merge the grouped head clans with the tail clans and return the result
-    return result.concat(tail);
+    return result;
 };
+
+// Iterate through head and group clansCopy based on number of players
+// let result = [],
+//     group = [],
+//     skip = [],
+//     sum = 0,
+//     players = 0;
+
+// do {
+//     players = clansCopy[0].numberOfPlayers;
+//     sum += players;
+
+//     if (sum <= groupCount) {
+//         group.push(clansCopy[0]);
+//         clansCopy.shift();
+//         if (sum === groupCount) {
+//             result.push(group);
+//             group = [];
+//             sum = 0;
+//             if (skip.length > 0) {
+//                 clansCopy.unshift(...skip);
+//                 skip = [];
+//             }
+//         }
+//     }
+
+//     if (sum > groupCount) {
+//         skip.push(clansCopy[0]);
+//         sum -= players;
+//         clansCopy.shift();
+//     }
+
+//     if (clansCopy.length === 0) {
+//         result.push(group);
+//         group = [];
+//         sum = 0;
+//         if (skip.length > 0) {
+//             clansCopy.unshift(...skip);
+//             skip = [];
+//         }
+//     }
+// } while (clansCopy.length > 0);
