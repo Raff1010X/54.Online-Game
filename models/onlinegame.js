@@ -6,35 +6,24 @@ exports.calculate = (data) => {
             ? a.numberOfPlayers - b.numberOfPlayers
             : b.points - a.points;
     });
-
     let result = [],
         group = [],
         skip = [],
-        sum = 0,
-        players = 0,
-        len = clansCopy.length;
-
+        sum = 0;
     do {
-        players = clansCopy[0].numberOfPlayers;
-        sum += players;
+        sum += clansCopy[0].numberOfPlayers;
         sum <= groupCount
             ? group.push(clansCopy[0])
-            : (skip.push(clansCopy[0]), (sum -= players));
+            : (skip.push(clansCopy[0]), (sum -= clansCopy[0].numberOfPlayers));
         clansCopy.shift();
-        len -= 1;
-
-        if (len === 0 || sum === groupCount) {
+        if (clansCopy.length === 0 || sum === groupCount) {
             result.push(group);
             group = [];
             sum = 0;
-            const skipLen = skip.length;
-            if (skipLen) {
-                clansCopy.unshift(...skip);
-                len += skipLen;
-                skip = [];
-            }
+            clansCopy.unshift(...skip);
+            skip = [];
         }
-    } while (len > 0);
+    } while (clansCopy.length > 0);
     console.timeEnd('time');
     return result;
 };
