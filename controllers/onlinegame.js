@@ -1,8 +1,6 @@
 const onlinegame = require('../models/onlinegame');
-const example = require('../example/example_request.json')
 
 exports.calculate = (req, res, next) => {
-    const data = req.body || example;
-    const response = onlinegame.calculate(data);
+    const response = onlinegame.calculate(req.body);
     res.status(200).send(response);
 };
